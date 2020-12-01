@@ -49,6 +49,8 @@ function isTodo($topSelectElem: DomElement) {
  */
 function isAllTodo(editor: Editor) {
     const $topSelectElems = editor.selection.getSelectionRangeTopNodes(editor)
+    // 排除为[]的情况
+    if ($topSelectElems.length === 0) return
 
     return $topSelectElems.every($topSelectElem => {
         const topName = $topSelectElem?.getNodeName()

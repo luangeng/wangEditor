@@ -3,11 +3,11 @@ import Editor from '../../editor'
 
 /**
  * 创建一个todo元素节点
- * @param editor 编辑器实例
+ * @param $orginElem 需要别替换为todo的节点
  */
-function createTodo($childElem?: DomElement): DomElement {
+function createTodo($orginElem?: DomElement): DomElement {
     let checked = false
-    let content: DomElement = $childElem?.childNodes()?.clone(true) as DomElement
+    let content: DomElement = $orginElem?.childNodes()?.clone(true) as DomElement
 
     const $targetElem = $(
         `<ul style="margin:0;"><li style="list-style:none;"><input type="checkbox" style="margin-right:3px;"></li></ul>`

@@ -73,15 +73,14 @@ class Todo extends BtnMenu implements MenuActive {
         const $topNodeElems: DomElement[] = editor.selection.getSelectionRangeTopNodes(editor)
 
         $topNodeElems.forEach($topNodeElem => {
-            const content = $topNodeElem.childNodes()?.childNodes()?.getNode(1)
+            console.log('bds')
+            console.log($topNodeElem)
+            let content = $topNodeElem.childNodes()?.childNodes()?.clone(true) as DomElement
             const $p = $(`<p></p>`)
-            if (content?.nodeType === 3) {
-                $p.text(content.nodeValue as string)
-            } else {
-                const $content = $(content)
-                $p.append($content)
-            }
+            $p.append(content)
             $p.insertAfter($topNodeElem)
+            // 移除input
+            $p.childNodes()?.get(0).remove()
             editor.selection.moveCursor($p.getNode())
             $topNodeElem.remove()
         })

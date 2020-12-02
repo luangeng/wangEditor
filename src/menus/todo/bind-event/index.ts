@@ -58,8 +58,23 @@ function bindEvent(editor: Editor) {
         }
     }
 
+    /**
+     * 删除事件up时，对处于第一行的todo进行特殊处理
+     */
+    function delUp() {
+        const $topSelectElem = editor.selection.getSelectionRangeTopNodes(editor)[0]
+        const nodeName = $topSelectElem.getNodeName()
+        if (nodeName === 'UL') {
+            if ($topSelectElem.text() === '' && !isTodo($topSelectElem)) {
+                $(`<p><br></p>`).insertAfter($topSelectElem)
+                $topSelectElem.remove()
+            }
+        }
+    }
+
     editor.txt.eventHooks.enterDownEvents.push(todoEnter)
     editor.txt.eventHooks.deleteDownEvents.push(todoDel)
+    editor.txt.eventHooks.deleteUpEvents.push(delUp)
 }
 
 export default bindEvent

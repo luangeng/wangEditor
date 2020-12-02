@@ -241,13 +241,15 @@ class SelectionAndRange {
 
     /**
      * 移动光标位置
-     * 不能适配有子元素的节点   之后改进
      * @param {Node} node 元素节点
-     * @param {number} position 光标的位置 默认在结束位置
+     * @param {number} position 光标的位置 默认在尾部
      */
     public moveCursor(node: Node, position?: number) {
         const range = this.getRange()
-        const pos: number = position || position === 0 ? position : node.childNodes.length
+
+        //对文本节点特殊处理
+        const len = node.nodeType === 3 ? node.nodeValue?.length : node.childNodes.length
+        const pos: number = position || position === 0 ? position : (len as number)
 
         if (!range) {
             return

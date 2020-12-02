@@ -535,8 +535,6 @@ export class DomElement<T extends DomElementSelector = DomElementSelector> {
     remove(): DomElement {
         return this.forEach(elem => {
             if (elem.remove) {
-                console.log(elem)
-                console.log('rev')
                 elem.remove()
             } else {
                 const parent = elem.parentElement

@@ -1,5 +1,5 @@
 import Editor from '../../../editor/index'
-import $ from '../../../utils/dom-core'
+import $, { DomElement } from '../../../utils/dom-core'
 import { createTodo, isTodo, isAllTodo } from '../create-todo-node'
 
 /**
@@ -17,26 +17,39 @@ function bindEvent(editor: Editor) {
             e.preventDefault()
             const $topSelectElem = editor.selection.getSelectionRangeTopNodes(editor)[0]
             const $selectElem = editor.selection.getSelectionContainerElem()
-            const cursorPos: number = editor.selection.getCursorPos() as number
+            const selectionNode = editor.selection.getSelection()?.anchorNode
+            const cursorPos: number =
+                selectionNode?.nodeName === '#text'
+                    ? (editor.selection.getCursorPos() as number)
+                    : 0
             let content
             // 处理回车后光标有内容的部分
-            if ($selectElem?.text().length !== cursorPos && cursorPos > 0) {
+            if ($selectElem?.text().length !== cursorPos && cursorPos >= 0) {
                 const txt = $selectElem?.text().slice(cursorPos)
                 const orginTxt = $selectElem?.text().slice(0, cursorPos) as string
                 const textNode = $selectElem?.childNodes()?.getNode(1)
                 // 不带样式的文本内容需要特殊处理
                 textNode ? (textNode.nodeValue = orginTxt) : $selectElem?.text(orginTxt)
                 content = $(`<p>${txt}</p>`)
-            }
-            const $newTodo = createTodo(content)
-            const $newTodoChildren = $newTodo.childNodes()?.getNode() as Node
-            if ($topSelectElem.text() === '') {
-                $(`<p><br></p>`).insertAfter($topSelectElem)
+            } else if ($topSelectElem.text() === '') {
+                const $p = $(`<p><br></p>`)
+                $p.insertAfter($topSelectElem)
+                editor.selection.moveCursor($p.getNode(), 0)
                 $topSelectElem.remove()
                 return
             }
+            const $newTodo = createTodo(content)
+            const $newTodoChildren = $newTodo.childNodes()?.getNode() as Node
+            if (!content) {
+                const $input = $newTodo.childNodes()?.childNodes() as DomElement
+                const $br = $(`<br>`)
+                $br.insertAfter($input)
+            }
+
             $newTodo.insertAfter($topSelectElem)
-            editor.selection.moveCursor($newTodoChildren)
+            !content
+                ? editor.selection.moveCursor($newTodoChildren, 1)
+                : editor.selection.moveCursor($newTodoChildren)
         }
     }
     /**
@@ -47,12 +60,13 @@ function bindEvent(editor: Editor) {
         const $topSelectElem = editor.selection.getSelectionRangeTopNodes(editor)[0]
         if (isTodo($topSelectElem)) {
             if ($topSelectElem.text() === '') {
+                console.log($topSelectElem)
                 e.preventDefault()
                 const $p = $(`<p><br></p>`)
                 $p.insertAfter($topSelectElem)
                 editor.selection.saveRange()
                 // 兼容firefox下光标位置问题
-                editor.selection.moveCursor($p.getNode(), 0)
+                editor.selection.moveCursor($p.getNode())
                 $topSelectElem.remove()
             }
         }

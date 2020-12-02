@@ -24,7 +24,6 @@ class Todo extends BtnMenu implements MenuActive {
         if (!isAllTodo(editor)) {
             // 设置todolist
             this.setTodo()
-            this.active()
         } else {
             // 取消设置todolist
             this.cancelTodo()
@@ -55,12 +54,13 @@ class Todo extends BtnMenu implements MenuActive {
                 }
                 const todoNode = createTodo($node)
                 const child = todoNode.children()?.getNode() as Node
-                const textNode = todoNode.childNodes()?.childNodes()?.get(1).selector as Node
+                const textNode = todoNode.childNodes()?.childNodes()?.last().selector as Node
                 todoNode.insertAfter($node)
                 todoNode.text() === ''
                     ? editor.selection.moveCursor(child, 1)
                     : editor.selection.moveCursor(textNode)
                 $node.remove()
+                this.active()
             }
         })
     }
@@ -73,8 +73,6 @@ class Todo extends BtnMenu implements MenuActive {
         const $topNodeElems: DomElement[] = editor.selection.getSelectionRangeTopNodes(editor)
 
         $topNodeElems.forEach($topNodeElem => {
-            console.log('bds')
-            console.log($topNodeElem)
             let content = $topNodeElem.childNodes()?.childNodes()?.clone(true) as DomElement
             const $p = $(`<p></p>`)
             $p.append(content)

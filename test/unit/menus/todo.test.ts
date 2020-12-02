@@ -1,5 +1,5 @@
-import { createTodo } from '../../src/menus/todo/create-todo-node'
-import $ from '../../src/utils/dom-core'
+import { createTodo } from '../../../src/menus/todo/create-todo-node'
+import $ from '../../../src/utils/dom-core'
 
 test('创建空todo', () => {
     const todo = createTodo()

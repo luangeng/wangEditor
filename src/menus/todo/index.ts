@@ -2,8 +2,9 @@ import $, { DomElement } from '../../utils/dom-core'
 import BtnMenu from '../menu-constructors/BtnMenu'
 import Editor from '../../editor/index'
 import { MenuActive } from '../menu-constructors/Menu'
-import { createTodo, isAllTodo } from './create-todo-node'
+import { isAllTodo } from './create-todo-node'
 import bindEvent from './bind-event'
+import createTodo from './todo'
 
 class Todo extends BtnMenu implements MenuActive {
     constructor(editor: Editor) {
@@ -52,7 +53,8 @@ class Todo extends BtnMenu implements MenuActive {
                 if (img?.length > 0 && img?.getNodeName() === 'IMG') {
                     return
                 }
-                const todoNode = createTodo($node)
+                const todo = createTodo($node)
+                const todoNode = todo.getTodo()
                 const child = todoNode.children()?.getNode() as Node
                 const textNode = todoNode.childNodes()?.childNodes()?.last().selector as Node
                 todoNode.insertAfter($node)

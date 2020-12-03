@@ -1,6 +1,7 @@
 import Editor from '../../../editor/index'
 import $, { DomElement } from '../../../utils/dom-core'
-import { createTodo, isTodo, isAllTodo } from '../create-todo-node'
+import { isTodo, isAllTodo } from '../create-todo-node'
+import createTodo from '../todo'
 
 /**
  * todolist 内部逻辑
@@ -38,7 +39,8 @@ function bindEvent(editor: Editor) {
                 $topSelectElem.remove()
                 return
             }
-            const $newTodo = createTodo(content)
+            const todo = createTodo(content)
+            const $newTodo = todo.getTodo()
             const $newTodoChildren = $newTodo.childNodes()?.getNode() as Node
             if (!content) {
                 const $input = $newTodo.childNodes()?.childNodes() as DomElement

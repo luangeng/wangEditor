@@ -39,7 +39,7 @@ function isTodo($topSelectElem: DomElement) {
     const topName = $topSelectElem?.getNodeName()
     if (topName === 'UL') {
         // input所在的dom节点位置
-        const childName = $topSelectElem.childNodes()?.childNodes()?.getNodeName()
+        const childName = $topSelectElem.childNodes()?.childNodes()?.childNodes()?.getNodeName()
         return childName === 'INPUT'
     }
 }
@@ -56,7 +56,7 @@ function isAllTodo(editor: Editor) {
         const topName = $topSelectElem?.getNodeName()
         if (topName === 'UL') {
             // input所在的dom节点位置
-            const childName = $topSelectElem.childNodes()?.childNodes()?.getNodeName()
+            const childName = $topSelectElem.childNodes()?.childNodes()?.childNodes()?.getNodeName()
             return childName === 'INPUT'
         }
     })

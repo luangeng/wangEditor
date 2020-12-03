@@ -2,7 +2,7 @@ import $, { DomElement } from '../../utils/dom-core'
 import BtnMenu from '../menu-constructors/BtnMenu'
 import Editor from '../../editor/index'
 import { MenuActive } from '../menu-constructors/Menu'
-import { isAllTodo } from './create-todo-node'
+import { isAllTodo } from './util'
 import bindEvent from './bind-event'
 import createTodo from './todo'
 

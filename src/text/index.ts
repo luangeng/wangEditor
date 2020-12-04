@@ -450,6 +450,11 @@ class Text {
                 e.stopPropagation()
                 $img = $target
             }
+            if ($target.getNodeName() === 'VIDEO') {
+                // 当前点击的就是img
+                e.stopPropagation()
+                $img = $target
+            }
             if (!$img) return // 没有点击图片，则返回
 
             const imgClickEvents = eventHooks.imgClickEvents

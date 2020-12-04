@@ -47,6 +47,7 @@ export type ConfigType = {
     showLinkImg: boolean
     uploadImgAccept: string[]
     uploadImgServer: string
+    uploadMp4Server: string
     uploadImgShowBase64: boolean
     uploadImgMaxSize: number
     uploadImgMaxLength: number

@@ -60,6 +60,7 @@ export default {
 
     // 钩子函数
     uploadImgHooks: {},
+    uploadMp4Hooks: {},
 
     // 上传图片超时时间 ms
     uploadImgTimeout: 10 * 1000,

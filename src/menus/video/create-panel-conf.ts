@@ -9,11 +9,7 @@ import { getRandom } from '../../utils/util'
 import $ from '../../utils/dom-core'
 import post from '../../editor/upload/upload-core'
 import Progress from '../../editor/upload/progress'
-
-export type ResType = {
-    errno: number | string
-    data: string
-}
+import { ResType } from '../img/upload-img'
 
 export default function (editor: Editor, video: string): PanelConf {
     // panel 中需要用到的id
@@ -22,8 +18,11 @@ export default function (editor: Editor, video: string): PanelConf {
 
     const upTriggerId = getRandom('up-trigger-id')
     const upFileId = getRandom('up-file-id')
+    const config = editor.config
+    const hooks = config.uploadMp4Hooks
 
     let uploadMp4Server = editor.config.uploadMp4Server
+    let videoAttr = editor.config.uploadVideoAttr
 
     /**
      * 插入链接
@@ -31,9 +30,11 @@ export default function (editor: Editor, video: string): PanelConf {
      */
     function insertVideo(video: string): void {
         var v =
-            `<p><video controls controlsList="nodownload" playsinline="true" webkit-playsinline="true" width="60%"><source src="` +
+            `<p><video ` +
+            videoAttr +
+            `width="60%"><source src="` +
             video +
-            `" type="video/mp4"></video><br></p><p><br></p>`
+            `" type="video/mp4"></video><br></p>`
         editor.cmd.do('insertHTML', v)
     }
 
@@ -96,7 +97,9 @@ export default function (editor: Editor, video: string): PanelConf {
                                     formData,
                                     headers: undefined,
                                     withCredentials: true,
-                                    beforeSend: xhr => {},
+                                    beforeSend: xhr => {
+                                        if (hooks.before) return hooks.before(xhr, editor, fileList)
+                                    },
                                     onTimeout: xhr => {
                                         window.alert('上传视频超时')
                                     },
@@ -121,7 +124,9 @@ export default function (editor: Editor, video: string): PanelConf {
                                             return
                                         }
                                         const data = result.data
-                                        insertVideo(data)
+                                        insertVideo(data[0])
+                                        // 钩子函数
+                                        if (hooks.success) hooks.success(xhr, editor, result)
                                     },
                                 })
                                 if (typeof xhr === 'string') {

@@ -48,6 +48,7 @@ export type ConfigType = {
     uploadImgAccept: string[]
     uploadImgServer: string
     uploadMp4Server: string
+    uploadVideoAttr: string
     uploadImgShowBase64: boolean
     uploadImgMaxSize: number
     uploadImgMaxLength: number
@@ -56,6 +57,7 @@ export type ConfigType = {
     uploadImgParamsWithUrl: boolean
     uploadImgHeaders: DicType
     uploadImgHooks: UploadImageHooksType
+    uploadMp4Hooks: UploadImageHooksType
     uploadImgTimeout: number
     withCredentials: boolean
     customUploadImg: Function | null

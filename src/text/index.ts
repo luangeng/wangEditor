@@ -451,7 +451,7 @@ class Text {
                 $img = $target
             }
             if ($target.getNodeName() === 'VIDEO') {
-                // 当前点击的就是img
+                // 当前点击的是video
                 e.stopPropagation()
                 $img = $target
             }
